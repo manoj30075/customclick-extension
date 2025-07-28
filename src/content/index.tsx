@@ -188,7 +188,9 @@ const init = () => {
     e.stopPropagation();
     
     // Show custom menu at click position
-    menuManager.show(e.clientX + window.scrollX, e.clientY + window.scrollY);
+    const x = e.clientX + window.scrollX;
+    const y = e.clientY + window.scrollY;
+    menuManager.show(x, y);
     
     // Log performance
     const renderTime = performance.now() - contextMenuStartTime;

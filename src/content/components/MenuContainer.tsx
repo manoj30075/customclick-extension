@@ -114,7 +114,9 @@ export const MenuContainer: React.FC<MenuContainerProps> = ({
     }
   }, [isVisible, onClose]);
 
-  if (!isVisible) return null;
+  if (!isVisible) {
+    return null;
+  }
 
   // Adjust position for screen edges
   const adjustedPosition = adjustMenuPosition(position);
