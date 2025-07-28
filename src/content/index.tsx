@@ -29,13 +29,13 @@ const CustomClickMenu: React.FC = () => {
 const init = () => {
   const container = createMenuContainer();
   const root = createRoot(container);
-  
+
   // Listen for right-click events
-  document.addEventListener('contextmenu', (e) => {
+  document.addEventListener('contextmenu', e => {
     console.log('Right-click detected at:', e.pageX, e.pageY);
     // TODO: Show custom menu
   });
-  
+
   root.render(<CustomClickMenu />);
 };
 

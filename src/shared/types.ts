@@ -41,14 +41,14 @@ export interface AIConfig {
   maxTokens: number;
 }
 
-export type MessageType = 
+export type MessageType =
   | 'SHOW_MENU'
-  | 'HIDE_MENU' 
+  | 'HIDE_MENU'
   | 'EXECUTE_ACTION'
   | 'GET_SETTINGS'
   | 'UPDATE_SETTINGS';
 
 export interface Message {
   type: MessageType;
-  payload?: any;
+  payload?: unknown;
 }

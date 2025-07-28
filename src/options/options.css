@@ -12,7 +12,7 @@
 }
 
 .options-header h1 {
-  @apply text-3xl font-bold text-primary-600 dark:text-primary-400 mb-2;
+  @apply text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2;
 }
 
 .options-header p {
@@ -45,7 +45,7 @@
   @apply text-gray-900 dark:text-white;
 }
 
-.setting-item input[type="checkbox"] {
+.setting-item input[type='checkbox'] {
   @apply mr-2;
 }
 
@@ -54,7 +54,7 @@
 }
 
 .save-button {
-  @apply px-6 py-2 bg-primary-600 hover:bg-primary-700;
+  @apply px-6 py-2 bg-blue-600 hover:bg-blue-700;
   @apply text-white rounded-lg font-medium;
   @apply transition-colors duration-200;
 }

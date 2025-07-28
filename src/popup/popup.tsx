@@ -9,26 +9,26 @@ const Popup: React.FC = () => {
         <h1>CustomClick</h1>
         <p>Transform your right-click experience</p>
       </header>
-      
+
       <main className="popup-content">
         <div className="feature-item">
           <h3>🎯 Custom Menu</h3>
           <p>Personalize your right-click menu with custom actions</p>
         </div>
-        
+
         <div className="feature-item">
           <h3>🤖 AI Integration</h3>
           <p>Built-in ChatGPT for instant assistance</p>
         </div>
-        
+
         <div className="feature-item">
           <h3>⚡ Lightning Fast</h3>
           <p>Renders in under 100ms</p>
         </div>
       </main>
-      
+
       <footer className="popup-footer">
-        <button 
+        <button
           onClick={() => chrome.runtime.openOptionsPage()}
           className="options-button"
         >

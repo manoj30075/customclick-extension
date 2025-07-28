@@ -7,7 +7,7 @@ chrome.runtime.onInstalled.addListener(() => {
 });
 
 // Handle messages from content scripts
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
   console.log('Background received message:', request);
   sendResponse({ status: 'received' });
 });

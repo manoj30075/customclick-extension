@@ -14,12 +14,12 @@ const Options: React.FC = () => {
     iconSize: 'medium',
     animations: true,
   });
-  
+
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
     // Load settings from Chrome storage
-    chrome.storage.sync.get(['settings'], (result) => {
+    chrome.storage.sync.get(['settings'], result => {
       if (result.settings) {
         setSettings(result.settings);
       }
@@ -43,12 +43,14 @@ const Options: React.FC = () => {
       <main className="options-content">
         <section className="settings-section">
           <h2>Appearance</h2>
-          
+
           <div className="setting-item">
             <label>Theme</label>
             <select
               value={settings.theme}
-              onChange={(e) => setSettings({...settings, theme: e.target.value as any})}
+              onChange={e =>
+                setSettings({ ...settings, theme: e.target.value as Settings['theme'] })
+              }
             >
               <option value="light">Light</option>
               <option value="dark">Dark</option>
@@ -60,7 +62,9 @@ const Options: React.FC = () => {
             <label>Icon Size</label>
             <select
               value={settings.iconSize}
-              onChange={(e) => setSettings({...settings, iconSize: e.target.value as any})}
+              onChange={e =>
+                setSettings({ ...settings, iconSize: e.target.value as Settings['iconSize'] })
+              }
             >
               <option value="small">Small</option>
               <option value="medium">Medium</option>
@@ -73,7 +77,9 @@ const Options: React.FC = () => {
               <input
                 type="checkbox"
                 checked={settings.animations}
-                onChange={(e) => setSettings({...settings, animations: e.target.checked})}
+                onChange={e =>
+                  setSettings({ ...settings, animations: e.target.checked })
+                }
               />
               Enable Animations
             </label>
