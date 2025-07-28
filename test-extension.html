@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CustomClick Extension Test Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 40px;
+            line-height: 1.6;
+        }
+        .test-section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .test-text {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .instructions {
+            background-color: #e8f4fd;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #2196F3;
+        }
+    </style>
+</head>
+<body>
+    <h1>CustomClick Extension Testing Page</h1>
+    
+    <div class="instructions">
+        <h3>🧪 Manual Testing Instructions</h3>
+        <ol>
+            <li>Load the extension in Chrome by navigating to <code>chrome://extensions/</code></li>
+            <li>Enable "Developer mode" toggle</li>
+            <li>Click "Load unpacked" and select the <code>dist/</code> folder</li>
+            <li>Right-click anywhere on this page to test the custom context menu</li>
+            <li>Try Shift+Right-click to access the native context menu</li>
+            <li>Test edge cases by right-clicking near screen borders</li>
+        </ol>
+    </div>
+
+    <div class="test-section">
+        <h2>Test Case 1: Basic Right-Click</h2>
+        <div class="test-text">
+            Right-click on this text to see the custom menu appear. 
+            It should show options like Search, Copy, Translate, and Custom Action.
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test Case 2: Selected Text</h2>
+        <div class="test-text">
+            Select this text first, then right-click on the selection. 
+            The menu should appear with context-appropriate options.
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test Case 3: Edge Positioning</h2>
+        <div class="test-text" style="margin-top: 400px;">
+            Scroll down and right-click near the bottom or right edge of the screen 
+            to test menu positioning logic.
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test Case 4: Native Menu Fallback</h2>
+        <div class="test-text">
+            Hold Shift and right-click here to see the native browser context menu instead.
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test Case 5: Close Menu</h2>
+        <div class="test-text">
+            Right-click to open menu, then:
+            <ul>
+                <li>Press ESC key to close</li>
+                <li>Click elsewhere to close</li>
+                <li>Click a menu item to close and trigger action</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test Case 6: Performance</h2>
+        <div class="test-text">
+            Rapidly right-click multiple times in different locations. 
+            Check browser console for performance metrics (should be &lt;10ms).
+        </div>
+    </div>
+
+    <div style="height: 500px; padding: 20px; background: linear-gradient(45deg, #f0f0f0, #e0e0e0);">
+        <h2>Scroll Test Area</h2>
+        <p>Right-click anywhere in this scrolled area to test menu positioning with page scroll.</p>
+    </div>
+
+    <script>
+        // Add some interaction logging for testing
+        document.addEventListener('contextmenu', (e) => {
+            console.log('Context menu event fired at:', e.clientX, e.clientY);
+        });
+
+        document.addEventListener('click', (e) => {
+            console.log('Click event at:', e.clientX, e.clientY);
+        });
+
+        // Test text selection
+        document.addEventListener('selectionchange', () => {
+            const selection = window.getSelection();
+            if (selection.toString().length > 0) {
+                console.log('Text selected:', selection.toString());
+            }
+        });
+    </script>
+</body>
+</html>
