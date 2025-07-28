@@ -1,0 +1,60 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.options-container {
+  @apply max-w-4xl mx-auto p-6 bg-white dark:bg-gray-900;
+  @apply text-gray-900 dark:text-white min-h-screen;
+}
+
+.options-header {
+  @apply mb-8;
+}
+
+.options-header h1 {
+  @apply text-3xl font-bold text-primary-600 dark:text-primary-400 mb-2;
+}
+
+.options-header p {
+  @apply text-gray-600 dark:text-gray-400;
+}
+
+.options-content {
+  @apply space-y-8;
+}
+
+.settings-section {
+  @apply bg-gray-50 dark:bg-gray-800 p-6 rounded-lg;
+}
+
+.settings-section h2 {
+  @apply text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200;
+}
+
+.setting-item {
+  @apply mb-4;
+}
+
+.setting-item label {
+  @apply block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2;
+}
+
+.setting-item select {
+  @apply w-full p-2 border border-gray-300 dark:border-gray-600;
+  @apply bg-white dark:bg-gray-700 rounded-md;
+  @apply text-gray-900 dark:text-white;
+}
+
+.setting-item input[type="checkbox"] {
+  @apply mr-2;
+}
+
+.options-footer {
+  @apply mt-8 pt-6 border-t border-gray-200 dark:border-gray-700;
+}
+
+.save-button {
+  @apply px-6 py-2 bg-primary-600 hover:bg-primary-700;
+  @apply text-white rounded-lg font-medium;
+  @apply transition-colors duration-200;
+}

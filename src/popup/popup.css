@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.popup-container {
+  @apply w-80 p-4 bg-white dark:bg-gray-900;
+  @apply text-gray-900 dark:text-white;
+}
+
+.popup-header {
+  @apply mb-4 text-center;
+}
+
+.popup-header h1 {
+  @apply text-xl font-bold text-primary-600 dark:text-primary-400;
+}
+
+.popup-header p {
+  @apply text-sm text-gray-600 dark:text-gray-400 mt-1;
+}
+
+.popup-content {
+  @apply space-y-3 mb-4;
+}
+
+.feature-item {
+  @apply p-3 bg-gray-50 dark:bg-gray-800 rounded-lg;
+}
+
+.feature-item h3 {
+  @apply font-semibold text-sm mb-1;
+}
+
+.feature-item p {
+  @apply text-xs text-gray-600 dark:text-gray-400;
+}
+
+.popup-footer {
+  @apply pt-3 border-t border-gray-200 dark:border-gray-700;
+}
+
+.options-button {
+  @apply w-full py-2 px-4 bg-primary-600 hover:bg-primary-700;
+  @apply text-white rounded-lg text-sm font-medium;
+  @apply transition-colors duration-200;
+}
