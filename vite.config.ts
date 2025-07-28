@@ -22,6 +22,17 @@ export default defineConfig({
           }
           return '[name].[ext]';
         },
+        // Ensure content script is self-contained
+        manualChunks: (id) => {
+          if (id.includes('src/content')) {
+            return 'content';
+          }
+        },
+      },
+      // Make content script a separate bundle without external dependencies
+      external: (id) => {
+        // Don't externalize anything for content script
+        return false;
       },
     },
   },
