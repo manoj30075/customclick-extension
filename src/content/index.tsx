@@ -1,5 +1,6 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { createRoot, type Root } from 'react-dom/client';
+import { MenuContainer, type MenuSection } from './components/MenuContainer';
 import './styles.css';
 
 // Content script for CustomClick extension
@@ -16,103 +17,101 @@ interface CustomClickMenuProps {
   onClose: () => void;
 }
 
-// Custom menu component
+// Define menu sections with proper structure
+const getMenuSections = (onClose: () => void): MenuSection[] => [
+  {
+    id: 'search-actions',
+    items: [
+      {
+        id: 'search',
+        label: 'Search',
+        icon: '🔍',
+        shortcut: 'Ctrl+F',
+        onClick: () => {
+          console.log('Search selected text');
+          onClose();
+        }
+      },
+      {
+        id: 'translate',
+        label: 'Translate',
+        icon: '🌐',
+        shortcut: 'Ctrl+T',
+        onClick: () => {
+          console.log('Translate selected text');
+          onClose();
+        }
+      }
+    ]
+  },
+  {
+    id: 'edit-actions',
+    items: [
+      {
+        id: 'copy',
+        label: 'Copy',
+        icon: '📋',
+        shortcut: 'Ctrl+C',
+        onClick: () => {
+          console.log('Copy selected text');
+          onClose();
+        }
+      },
+      {
+        id: 'paste',
+        label: 'Paste',
+        icon: '📝',
+        shortcut: 'Ctrl+V',
+        disabled: true, // Example of disabled item
+        onClick: () => {
+          console.log('Paste text');
+          onClose();
+        }
+      }
+    ]
+  },
+  {
+    id: 'custom-actions',
+    items: [
+      {
+        id: 'ai-assist',
+        label: 'AI Assistant',
+        icon: '🤖',
+        shortcut: 'Ctrl+A',
+        onClick: () => {
+          console.log('AI Assistant activated');
+          onClose();
+        }
+      },
+      {
+        id: 'custom-action',
+        label: 'Custom Action',
+        icon: '⚡',
+        onClick: () => {
+          console.log('Custom action triggered');
+          onClose();
+        }
+      }
+    ]
+  }
+];
+
+// Custom menu component wrapper
 const CustomClickMenu: React.FC<CustomClickMenuProps> = ({ isVisible, position, onClose }) => {
-  const menuRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        onClose();
-      }
-    };
-
-    const handleClickOutside = (e: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
-        onClose();
-      }
-    };
-
-    if (isVisible) {
-      document.addEventListener('keydown', handleKeyDown);
-      document.addEventListener('click', handleClickOutside);
-      
-      return () => {
-        document.removeEventListener('keydown', handleKeyDown);
-        document.removeEventListener('click', handleClickOutside);
-      };
-    }
-  }, [isVisible, onClose]);
-
-  if (!isVisible) return null;
-
-  const adjustedPosition = adjustMenuPosition(position);
-
+  const menuSections = getMenuSections(onClose);
+  
   return (
-    <div 
-      ref={menuRef}
-      className="customclick-menu"
-      style={{
-        position: 'fixed',
-        left: `${adjustedPosition.x}px`,
-        top: `${adjustedPosition.y}px`,
-        zIndex: 999999,
-        pointerEvents: 'auto'
-      }}
-    >
-      <div className="menu-item" onClick={() => { console.log('Search selected text'); onClose(); }}>
-        🔍 Search
-      </div>
-      <div className="menu-item" onClick={() => { console.log('Copy selected text'); onClose(); }}>
-        📋 Copy
-      </div>
-      <div className="menu-item" onClick={() => { console.log('Translate selected text'); onClose(); }}>
-        🌐 Translate
-      </div>
-      <hr className="menu-separator" />
-      <div className="menu-item" onClick={() => { console.log('Custom action'); onClose(); }}>
-        ⚡ Custom Action
-      </div>
-    </div>
+    <MenuContainer
+      sections={menuSections}
+      isVisible={isVisible}
+      position={position}
+      onClose={onClose}
+      aria-label="CustomClick context menu"
+    />
   );
 };
 
-// Adjust menu position to handle screen edges
-const adjustMenuPosition = (position: MenuPosition): MenuPosition => {
-  const menuWidth = 200; // Approximate menu width
-  const menuHeight = 150; // Approximate menu height
-  const padding = 10;
-  
-  const viewportWidth = window.innerWidth;
-  const viewportHeight = window.innerHeight;
-  const scrollX = window.scrollX;
-  const scrollY = window.scrollY;
-  
-  let adjustedX = position.x;
-  let adjustedY = position.y;
-  
-  // Handle right edge
-  if (position.x + menuWidth > viewportWidth + scrollX) {
-    adjustedX = viewportWidth + scrollX - menuWidth - padding;
-  }
-  
-  // Handle bottom edge
-  if (position.y + menuHeight > viewportHeight + scrollY) {
-    adjustedY = viewportHeight + scrollY - menuHeight - padding;
-  }
-  
-  // Ensure menu doesn't go off left edge
-  if (adjustedX < scrollX + padding) {
-    adjustedX = scrollX + padding;
-  }
-  
-  // Ensure menu doesn't go off top edge
-  if (adjustedY < scrollY + padding) {
-    adjustedY = scrollY + padding;
-  }
-  
-  return { x: adjustedX, y: adjustedY };
-};
+// Position adjustment is now handled in MenuContainer component
 
 // Create root container for React components
 const createMenuContainer = (): HTMLElement => {

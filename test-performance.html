@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CustomClick Performance Testing</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 40px;
+            line-height: 1.6;
+        }
+        .test-section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .performance-metrics {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+        .pass { color: green; font-weight: bold; }
+        .fail { color: red; font-weight: bold; }
+        .info { color: blue; }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>CustomClick Extension Performance Testing</h1>
+    
+    <div class="test-section">
+        <h2>🎯 SCRUM-24 Acceptance Criteria Testing</h2>
+        <p><strong>Target Requirements:</strong></p>
+        <ul>
+            <li>✅ MenuContainer component (280-360px width)</li>
+            <li>✅ MenuItem component with icon support</li>
+            <li>✅ Menu sections with dividers</li>
+            <li>✅ Smooth fade-in animation (60fps)</li>
+            <li>✅ Dark/Light theme support</li>
+            <li>✅ Keyboard navigation support</li>
+            <li>✅ ARIA labels and accessibility</li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>⚡ Performance Testing</h2>
+        <p>Right-click anywhere to test menu performance. Results will appear below:</p>
+        
+        <div class="performance-metrics" id="performance-results">
+            <div>Waiting for performance data...</div>
+        </div>
+        
+        <button onclick="runPerformanceTest()">Run Automated Performance Test</button>
+        <button onclick="clearResults()">Clear Results</button>
+    </div>
+
+    <div class="test-section">
+        <h2>🎨 Theme Testing</h2>
+        <p>Test theme switching:</p>
+        <button onclick="setLightTheme()">Light Theme</button>
+        <button onclick="setDarkTheme()">Dark Theme</button>
+        <button onclick="setSystemTheme()">System Theme</button>
+    </div>
+
+    <div class="test-section">
+        <h2>⌨️ Keyboard Navigation Testing</h2>
+        <div style="background: #fff3cd; padding: 10px; border-radius: 4px; margin: 10px 0;">
+            <strong>Instructions:</strong>
+            <ol>
+                <li>Right-click to open menu</li>
+                <li>Use ↑↓ arrow keys to navigate</li>
+                <li>Press Enter or Space to select</li>
+                <li>Press Escape to close</li>
+                <li>Try typing first letters for typeahead</li>
+                <li>Use Home/End for first/last item</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>🎭 Accessibility Testing</h2>
+        <p>Test area for screen readers and accessibility tools:</p>
+        <div style="height: 200px; background: #f8f9fa; border: 1px dashed #ccc; display: flex; align-items: center; justify-content: center;">
+            Right-click here for accessibility testing
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>📊 Memory Usage Monitoring</h2>
+        <div class="performance-metrics" id="memory-results">
+            <div>Memory data will appear here...</div>
+        </div>
+        <button onclick="checkMemoryUsage()">Check Memory Usage</button>
+    </div>
+
+    <script>
+        let performanceData = [];
+        let testCounter = 0;
+
+        // Performance monitoring
+        document.addEventListener('contextmenu', (e) => {
+            const startTime = performance.now();
+            
+            // Monitor render time
+            requestAnimationFrame(() => {
+                const renderTime = performance.now() - startTime;
+                recordPerformanceData(renderTime, e.clientX, e.clientY);
+            });
+        });
+
+        function recordPerformanceData(renderTime, x, y) {
+            testCounter++;
+            const data = {
+                test: testCounter,
+                renderTime: renderTime.toFixed(2),
+                position: `(${x}, ${y})`,
+                timestamp: new Date().toLocaleTimeString(),
+                pass: renderTime < 100 // Target: <100ms
+            };
+            
+            performanceData.push(data);
+            updatePerformanceDisplay();
+        }
+
+        function updatePerformanceDisplay() {
+            const results = document.getElementById('performance-results');
+            const latest = performanceData[performanceData.length - 1];
+            
+            if (!latest) return;
+            
+            const avgRenderTime = (
+                performanceData.reduce((sum, d) => sum + parseFloat(d.renderTime), 0) / 
+                performanceData.length
+            ).toFixed(2);
+            
+            const passRate = (
+                performanceData.filter(d => d.pass).length / performanceData.length * 100
+            ).toFixed(1);
+            
+            results.innerHTML = `
+                <div><strong>Latest Test #${latest.test}:</strong></div>
+                <div>Render Time: <span class="${latest.pass ? 'pass' : 'fail'}">${latest.renderTime}ms</span> (target: &lt;100ms)</div>
+                <div>Position: ${latest.position}</div>
+                <div>Timestamp: ${latest.timestamp}</div>
+                <hr>
+                <div><strong>Overall Stats (${performanceData.length} tests):</strong></div>
+                <div>Average Render Time: <span class="info">${avgRenderTime}ms</span></div>
+                <div>Pass Rate: <span class="${passRate > 90 ? 'pass' : 'fail'}">${passRate}%</span></div>
+                <div>Tests Passed: ${performanceData.filter(d => d.pass).length}/${performanceData.length}</div>
+            `;
+        }
+
+        function runPerformanceTest() {
+            const testPositions = [
+                {x: 100, y: 100},
+                {x: window.innerWidth - 100, y: 100},
+                {x: 100, y: window.innerHeight - 100},
+                {x: window.innerWidth - 100, y: window.innerHeight - 100},
+                {x: window.innerWidth / 2, y: window.innerHeight / 2}
+            ];
+            
+            let testIndex = 0;
+            
+            function runNextTest() {
+                if (testIndex >= testPositions.length) {
+                    alert(`Automated test complete! Ran ${testPositions.length} tests.`);
+                    return;
+                }
+                
+                const pos = testPositions[testIndex];
+                const startTime = performance.now();
+                
+                // Simulate context menu event
+                const event = new MouseEvent('contextmenu', {
+                    clientX: pos.x,
+                    clientY: pos.y,
+                    bubbles: true
+                });
+                
+                document.dispatchEvent(event);
+                
+                requestAnimationFrame(() => {
+                    const renderTime = performance.now() - startTime;
+                    recordPerformanceData(renderTime, pos.x, pos.y);
+                    
+                    testIndex++;
+                    setTimeout(runNextTest, 100); // Small delay between tests
+                });
+            }
+            
+            runNextTest();
+        }
+
+        function clearResults() {
+            performanceData = [];
+            testCounter = 0;
+            document.getElementById('performance-results').innerHTML = '<div>Results cleared. Right-click to start new tests.</div>';
+            document.getElementById('memory-results').innerHTML = '<div>Memory data cleared.</div>';
+        }
+
+        // Theme testing
+        function setLightTheme() {
+            document.documentElement.style.colorScheme = 'light';
+            console.log('Theme set to: Light');
+        }
+
+        function setDarkTheme() {
+            document.documentElement.style.colorScheme = 'dark';
+            console.log('Theme set to: Dark');
+        }
+
+        function setSystemTheme() {
+            document.documentElement.style.colorScheme = 'light dark';
+            console.log('Theme set to: System');
+        }
+
+        // Memory monitoring
+        function checkMemoryUsage() {
+            if (performance.memory) {
+                const memory = performance.memory;
+                const results = document.getElementById('memory-results');
+                
+                const usedMB = (memory.usedJSHeapSize / 1024 / 1024).toFixed(2);
+                const totalMB = (memory.totalJSHeapSize / 1024 / 1024).toFixed(2);
+                const limitMB = (memory.jsHeapSizeLimit / 1024 / 1024).toFixed(2);
+                
+                const memoryPass = usedMB < 10; // Target: <10MB
+                
+                results.innerHTML = `
+                    <div><strong>Memory Usage:</strong></div>
+                    <div>Used: <span class="${memoryPass ? 'pass' : 'fail'}">${usedMB} MB</span> (target: &lt;10MB)</div>
+                    <div>Total: <span class="info">${totalMB} MB</span></div>
+                    <div>Limit: <span class="info">${limitMB} MB</span></div>
+                    <div>Timestamp: ${new Date().toLocaleTimeString()}</div>
+                `;
+            } else {
+                document.getElementById('memory-results').innerHTML = 
+                    '<div class="fail">Memory API not available in this browser</div>';
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Performance testing page loaded');
+            console.log('Right-click anywhere to test the new menu components');
+            
+            // Auto-check memory on load
+            setTimeout(checkMemoryUsage, 1000);
+        });
+
+        // Add some test content for context menu testing
+        document.addEventListener('selectionchange', () => {
+            const selection = window.getSelection();
+            if (selection.toString().length > 0) {
+                console.log('Text selected:', selection.toString());
+            }
+        });
+    </script>
+</body>
+</html>
